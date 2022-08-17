@@ -18,15 +18,14 @@ const Item = ({ children }: PropsWithChildren) => {
 
   if (children) {
     return (
-      <option
-        value={children.toString()}
+      <div
         onClick={() => {
           onChange(children.toString());
           setIsOpen(false);
         }}
       >
         {children}
-      </option>
+      </div>
     );
   }
 
