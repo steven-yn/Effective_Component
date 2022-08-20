@@ -6,6 +6,8 @@ const FrameworkSelect = () => {
   const frameWorks = ["Next.js", "Remix", "Gatsby", "Relay"];
   const [selected, change] = useState("Next.js");
 
+  console.log("frameselect");
+
   return (
     <>
       <Select

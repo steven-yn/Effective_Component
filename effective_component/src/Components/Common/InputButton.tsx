@@ -1,6 +1,9 @@
 import { DownOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import useDropdownContext from "../../Hooks/useDropdownContext";
+import {
+  useDropdownContext,
+  useSetDropdownContext,
+} from "../../Hooks/useDropdownContext";
 
 const InputButtonBox = styled.button`
   display: flex;
@@ -15,7 +18,10 @@ const InputButtonBox = styled.button`
 `;
 
 const InputButton = ({ value }: { value: string }) => {
-  const { isOpen, setIsOpen } = useDropdownContext();
+  const { isOpen } = useDropdownContext();
+  const { setIsOpen } = useSetDropdownContext();
+
+  console.log("button");
 
   return (
     <>

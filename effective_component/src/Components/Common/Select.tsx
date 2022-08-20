@@ -10,6 +10,8 @@ type Props = {
 };
 
 const Select = ({ label, trigger, value, onChange, options }: Props) => {
+  console.log("select");
+
   return (
     <Dropdown label={label} value={value} onChange={onChange}>
       <Dropdown.Trigger as={trigger} />

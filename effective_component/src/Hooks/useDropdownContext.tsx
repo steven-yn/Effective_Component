@@ -1,22 +1,34 @@
 import React, { createContext } from "react";
-import { DropdownProps } from "../Components/Dropdown/Dropdown";
+import {
+  DropdownDispatchers,
+  DropdownProps,
+} from "../Components/Dropdown/Dropdown";
 
 type CtxProps = DropdownProps & {
   isOpen: boolean;
+};
+
+type DispProps = DropdownDispatchers & {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const DropDownContext = createContext<CtxProps>({
   label: "",
   value: "",
-  onChange: () => {},
   isOpen: false,
+});
+
+export const DropDownDispatchers = createContext<DispProps>({
+  onChange: () => {},
   setIsOpen: () => {},
 });
 
-const useDropdownContext = () => {
+export const useDropdownContext = () => {
   const context = React.useContext(DropDownContext);
   return context;
 };
 
-export default useDropdownContext;
+export const useSetDropdownContext = () => {
+  const Dispatcher = React.useContext(DropDownDispatchers);
+  return Dispatcher;
+};

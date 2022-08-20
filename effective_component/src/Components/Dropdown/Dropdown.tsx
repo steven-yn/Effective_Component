@@ -1,10 +1,15 @@
 import React, { PropsWithChildren, ReactElement, useState } from "react";
-import useDropdownContext, {
+import {
+  useDropdownContext,
   DropDownContext,
+  DropDownDispatchers,
+  useSetDropdownContext,
 } from "../../Hooks/useDropdownContext";
 
 const Menu = ({ children }: PropsWithChildren) => {
   const { isOpen } = useDropdownContext();
+
+  console.log("menu");
 
   if (children) {
     return <>{isOpen && children}</>;
@@ -14,7 +19,8 @@ const Menu = ({ children }: PropsWithChildren) => {
 };
 
 const Item = ({ children }: PropsWithChildren) => {
-  const { onChange, setIsOpen } = useDropdownContext();
+  const { onChange, setIsOpen } = useSetDropdownContext();
+  console.log("item");
 
   if (children) {
     return (
@@ -33,12 +39,16 @@ const Item = ({ children }: PropsWithChildren) => {
 };
 
 const Trigger = ({ as }: { as: ReactElement }) => {
+  console.log("trigger");
   return as;
 };
 
 export type DropdownProps = {
   label: string;
   value: string;
+};
+
+export type DropdownDispatchers = {
   onChange: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -47,21 +57,26 @@ const Dropdown = ({
   label,
   value,
   onChange,
-}: PropsWithChildren<DropdownProps>) => {
+}: PropsWithChildren<DropdownProps & DropdownDispatchers>) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const values = {
+  const states = {
     label: label,
     value: value,
-    onChange: onChange,
     isOpen: isOpen,
+  };
+
+  const dispatchers = {
+    onChange: onChange,
     setIsOpen: setIsOpen,
   };
 
   return (
-    <DropDownContext.Provider value={values}>
-      <label>{label}</label>
-      {children}
+    <DropDownContext.Provider value={states}>
+      <DropDownDispatchers.Provider value={dispatchers}>
+        <label>{label}</label>
+        {children}
+      </DropDownDispatchers.Provider>
     </DropDownContext.Provider>
   );
 };
