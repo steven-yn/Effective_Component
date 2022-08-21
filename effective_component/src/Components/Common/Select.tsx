@@ -4,16 +4,14 @@ import Dropdown from "../Dropdown/Dropdown";
 type Props = {
   label: string;
   trigger: ReactElement;
-  value: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
   options: string[];
 };
 
-const Select = ({ label, trigger, value, onChange, options }: Props) => {
+const Select = ({ label, trigger, options }: Props) => {
   console.log("select");
 
   return (
-    <Dropdown label={label} value={value} onChange={onChange}>
+    <Dropdown label={label}>
       <Dropdown.Trigger as={trigger} />
       <Dropdown.Menu>
         {options.map((option: string) => {

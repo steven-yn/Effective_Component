@@ -1,9 +1,7 @@
 import { DownOutlined } from "@ant-design/icons";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import {
-  useDropdownContext,
-  useSetDropdownContext,
-} from "../../Hooks/useDropdownContext";
+import dropDownState from "../../Atoms/ComponentAtoms/Dropdown/DropdownState";
 
 const InputButtonBox = styled.button`
   display: flex;
@@ -17,18 +15,19 @@ const InputButtonBox = styled.button`
   border-radius: 10px;
 `;
 
-const InputButton = ({ value }: { value: string }) => {
-  const { isOpen } = useDropdownContext();
-  const { setIsOpen } = useSetDropdownContext();
+const InputButton = () => {
+  const [{ value }, setDropdown] = useRecoilState(dropDownState);
 
   console.log("button");
-
   return (
     <>
       <InputButtonBox
         value={value}
         onClick={() => {
-          setIsOpen(!isOpen);
+          setDropdown((dropdown) => ({
+            ...dropdown,
+            isOpen: !dropdown.isOpen,
+          }));
         }}
       >
         {value}

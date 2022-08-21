@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import dropDownState from "../Atoms/ComponentAtoms/Dropdown/DropdownState";
 import InputButton from "./Common/InputButton";
 import Select from "./Common/Select";
 
 const FrameworkSelect = () => {
   const frameWorks = ["Next.js", "Remix", "Gatsby", "Relay"];
-  const [selected, change] = useState("Next.js");
+  const setDropDown = useSetRecoilState(dropDownState);
 
-  console.log("frameselect");
+  useEffect(() => {
+    setDropDown((dropdown) => ({ ...dropdown, value: frameWorks[0] }));
+  }, []);
 
   return (
-    <>
-      <Select
-        trigger={<InputButton value={selected} />}
-        label={"React Framework"}
-        value={selected}
-        onChange={change}
-        options={frameWorks}
-      />
-    </>
+    <Select
+      trigger={<InputButton />}
+      label={"React Framework"}
+      options={frameWorks}
+    />
   );
 };
 

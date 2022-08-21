@@ -1,13 +1,31 @@
-import React, { PropsWithChildren, ReactElement, useState } from "react";
-import {
-  useDropdownContext,
-  DropDownContext,
-  DropDownDispatchers,
-  useSetDropdownContext,
-} from "../../Hooks/useDropdownContext";
+import React, { PropsWithChildren, ReactElement } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import dropDownState from "../../Atoms/ComponentAtoms/Dropdown/DropdownState";
+
+const Dropdown = ({
+  children,
+  label,
+}: PropsWithChildren<{
+  label: string;
+}>) => {
+  console.log("dropdown");
+
+  return (
+    <>
+      <label>{label}</label>
+      {children}
+    </>
+  );
+};
+
+const Trigger = ({ as }: { as: ReactElement }) => {
+  console.log("trigger");
+
+  return as;
+};
 
 const Menu = ({ children }: PropsWithChildren) => {
-  const { isOpen } = useDropdownContext();
+  const { isOpen } = useRecoilValue(dropDownState);
 
   console.log("menu");
 
@@ -19,15 +37,19 @@ const Menu = ({ children }: PropsWithChildren) => {
 };
 
 const Item = ({ children }: PropsWithChildren) => {
-  const { onChange, setIsOpen } = useSetDropdownContext();
+  const setDropDown = useSetRecoilState(dropDownState);
+
   console.log("item");
 
   if (children) {
     return (
       <div
         onClick={() => {
-          onChange(children.toString());
-          setIsOpen(false);
+          setDropDown((dropdown) => ({
+            ...dropdown,
+            isOpen: false,
+            value: children.toString(),
+          }));
         }}
       >
         {children}
@@ -36,49 +58,6 @@ const Item = ({ children }: PropsWithChildren) => {
   }
 
   return <></>;
-};
-
-const Trigger = ({ as }: { as: ReactElement }) => {
-  console.log("trigger");
-  return as;
-};
-
-export type DropdownProps = {
-  label: string;
-  value: string;
-};
-
-export type DropdownDispatchers = {
-  onChange: React.Dispatch<React.SetStateAction<string>>;
-};
-
-const Dropdown = ({
-  children,
-  label,
-  value,
-  onChange,
-}: PropsWithChildren<DropdownProps & DropdownDispatchers>) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const states = {
-    label: label,
-    value: value,
-    isOpen: isOpen,
-  };
-
-  const dispatchers = {
-    onChange: onChange,
-    setIsOpen: setIsOpen,
-  };
-
-  return (
-    <DropDownContext.Provider value={states}>
-      <DropDownDispatchers.Provider value={dispatchers}>
-        <label>{label}</label>
-        {children}
-      </DropDownDispatchers.Provider>
-    </DropDownContext.Provider>
-  );
 };
 
 Dropdown.Trigger = Trigger;
